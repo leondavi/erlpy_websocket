@@ -260,25 +260,17 @@ handle_info({tcp_error, Socket, Reason}, #state{client_socket = Socket} = State)
     {noreply, State#state{client_socket = undefined, client_pid = undefined}};
 
 handle_info({new_client, ClientSocket}, State) ->
-    logger:info("New WebSocket client connected, taking socket ownership"),
-    logger:info("DEBUG: Socket before ownership transfer: ~p", [ClientSocket]),
+    logger:info("New WebSocket client connected, socket ownership already transferred"),
+    logger:info("DEBUG: Socket after ownership transfer: ~p", [ClientSocket]),
     
-    % Transfer socket ownership from accept loop process to this gen_server process
-    case gen_tcp:controlling_process(ClientSocket, self()) of
+    % Socket ownership is already transferred, just set socket options
+    case inet:setopts(ClientSocket, [{active, once}]) of
         ok ->
-            logger:info("Successfully transferred socket ownership to gen_server"),
-            % Now set socket options after we own it
-            case inet:setopts(ClientSocket, [{active, once}]) of
-                ok ->
-                    logger:info("Successfully set socket to {active, once}"),
-                    ok;
-                {error, SetOptError} ->
-                    logger:error("Failed to set socket options: ~p", [SetOptError])
-            end,
+            logger:info("Successfully set socket to {active, once}"),
             logger:info("DEBUG: Socket options after setup: ~p", [inet:getopts(ClientSocket, [active, packet])]),
             {noreply, State#state{client_socket = ClientSocket}};
-        {error, OwnershipError} ->
-            logger:error("Failed to transfer socket ownership: ~p", [OwnershipError]),
+        {error, SetOptError} ->
+            logger:error("Failed to set socket options: ~p", [SetOptError]),
             gen_tcp:close(ClientSocket),
             {noreply, State}
     end;
@@ -315,9 +307,25 @@ accept_loop(ListenSocket, ServerPid) ->
                 {ok, ClientSocket} ->
                     logger:info("NEW CLIENT CONNECTED - starting handshake, ClientSocket: ~p", [ClientSocket]),
                     logger:info("Client socket details: ~p", [inet:peername(ClientSocket)]),
-                    % Spawn a separate process to handle this client so accept loop doesn't block
-                    spawn_link(fun() -> handle_client_handshake(ClientSocket, ServerPid) end),
-                    % Immediately continue accepting more connections
+                    % Handle handshake directly in accept loop process (which owns the socket)
+                    case websocket_handshake(ClientSocket) of
+                        ok ->
+                            logger:info("WebSocket handshake successful, transferring socket ownership"),
+                            % Transfer socket ownership to the main gen_server process
+                            case gen_tcp:controlling_process(ClientSocket, ServerPid) of
+                                ok ->
+                                    logger:info("Successfully transferred socket ownership to gen_server"),
+                                    % Notify the main process about new client
+                                    ServerPid ! {new_client, ClientSocket};
+                                {error, OwnershipError} ->
+                                    logger:error("Failed to transfer socket ownership: ~p", [OwnershipError]),
+                                    gen_tcp:close(ClientSocket)
+                            end;
+                        {error, Reason} ->
+                            logger:warning("WebSocket handshake failed: ~p", [Reason]),
+                            gen_tcp:close(ClientSocket)
+                    end,
+                    % Continue accepting more connections
                     accept_loop(ListenSocket, ServerPid);
                 {error, Reason} ->
                     logger:error("Failed to accept connection: ~p", [Reason]),
@@ -328,18 +336,6 @@ accept_loop(ListenSocket, ServerPid) ->
             logger:error("Socket no longer bound: ~p", [SocknameError]),
             timer:sleep(5000),
             accept_loop(ListenSocket, ServerPid)
-    end.
-
-handle_client_handshake(ClientSocket, ServerPid) ->
-    logger:info("Handling client handshake in separate process"),
-    case websocket_handshake(ClientSocket) of
-        ok ->
-            logger:info("WebSocket handshake successful"),
-            % Notify the main process about new client
-            ServerPid ! {new_client, ClientSocket};
-        {error, Reason} ->
-            logger:warning("WebSocket handshake failed: ~p", [Reason]),
-            gen_tcp:close(ClientSocket)
     end.
 
 websocket_handshake(Socket) ->

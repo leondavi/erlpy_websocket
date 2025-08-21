@@ -6,6 +6,19 @@ _build/
 *.so
 *.app
 erl_crash.dump
+rebar3.crashdump
+
+# rebar3 specific
+**/deps/
+.rebar3/
+
+# Dialyzer
+.dialyzer_plt
+.local_dialyzer_plt
+
+# Cover/test results
+cover/
+*.coverdata
 
 # Python artifacts
 __pycache__/
@@ -36,17 +49,40 @@ MANIFEST
 venv/
 env/
 ENV/
+.env
+.venv
+env.bak/
+venv.bak/
 
-# IDEs
+# Python testing and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# IDEs and editors
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+.project
+.metadata
+.settings/
+*.tmproj
+*.tmproject
 
-# OS
+# OS files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
 Thumbs.db
+ehthumbs.db
 
 # Logs
 *.log
@@ -60,3 +96,25 @@ ct_run*/
 # Temporary files
 *.tmp
 *.temp
+*.bak
+*.backup
+*.orig
+
+# Documentation build
+docs/_build/
+doc/_build/
+
+# Node.js (if frontend tools used)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

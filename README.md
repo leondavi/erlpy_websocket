@@ -231,17 +231,38 @@ Enable detailed logging in Erlang:
 logger:set_primary_config(level, debug).
 ```
 
-## License
+## 📄 License
 
-MIT License - see individual source files for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contributing
+### Citation
+
+If you use this software in academic research or publications, please cite:
+
+```
+Leon, David. "erlpy_websocket: RFC 6455 compliant WebSocket server for Erlang/Python communication." 2025. GitHub repository: https://github.com/leondavi/erlpy_websocket
+```
+
+BibTeX:
+```bibtex
+@misc{leon2025erlpy,
+  title={erlpy\_websocket: RFC 6455 compliant WebSocket server for Erlang/Python communication},
+  author={Leon, David},
+  year={2025},
+  publisher={GitHub},
+  url={https://github.com/leondavi/erlpy_websocket}
+}
+```
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Add tests for new functionality
-4. Ensure all tests pass
-5. Submit a pull request
+4. Ensure all tests pass (`rebar3 eunit` and `python -m pytest`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
 
 ## 📚 References
 
