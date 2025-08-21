@@ -83,15 +83,15 @@ This will run the client in demo mode with test messages and interactive input.
 
 ```erlang
 % Start programmatically
-{ok, Pid} = berl_websocket_server:start_link().     % Default port 19765
-{ok, Pid} = berl_websocket_server:start_link(8080). % Custom port
+{ok, Pid} = websocket_server:start_link().     % Default port 19765
+{ok, Pid} = websocket_server:start_link(8080). % Custom port
 
 % Send messages to connected clients
 berl_websocket_server:send_message(19765, #{type => <<"notification">>, 
                                            message => <<"Hello!">>}).
 
 % Stop server
-berl_websocket_server:stop(19765).
+websocket_server:stop(19765).
 ```
 
 ## 📨 Message Protocol
@@ -166,63 +166,6 @@ python3 test/test_python_client.py
 2. In another terminal: `./run_py_app.sh --mode interactive`
 3. Type JSON messages like: `{"type": "ping", "timestamp": "2025-01-01T00:00:00Z"}`
 
-## 🔧 Integration with rebar3 Projects
-
-To integrate the WebSocket server into your existing Erlang project:
-
-### Method 1: Copy Source Files
-
-1. Copy `src/berl_websocket_server.erl` to your project's `src/` directory
-2. Copy `src/berl_app.erl` or replace with your own command handler
-3. Add to your `rebar.config`:
-   ```erlang
-   {deps, [
-       {jsx, "3.1.0"}  % For JSON handling
-   ]}.
-   ```
-4. Add modules to your `.app.src`:
-   ```erlang
-   {modules, [berl_websocket_server, your_app, ...]},
-   {applications, [kernel, stdlib, jsx, ...]},
-   ```
-
-### Method 2: Git Dependency
-
-Add to your `rebar.config`:
-```erlang
-{deps, [
-    {berl_websocket, {git, "https://github.com/yourusername/erlpy_websocket.git", {branch, "main"}}}
-]}.
-```
-
-### Method 3: Use as Library
-
-1. Clone this repository
-2. Run `rebar3 compile` to build
-3. Add to your Erlang code path: `erl -pa /path/to/erlpy_websocket/_build/default/lib/*/ebin`
-
-## ⚙️ Configuration
-
-### Erlang Server Configuration
-
-```erlang
-% Custom port
-{ok, Pid} = berl_websocket_server:start_link(8080).
-
-% Multiple servers
-{ok, Pid1} = berl_websocket_server:start_link(8080).
-{ok, Pid2} = berl_websocket_server:start_link(8081).
-```
-
-### Python Client Configuration
-
-```python
-from src_py.websocket_client import BerlWebSocketClient
-
-# Custom configuration
-client = BerlWebSocketClient(host='192.168.1.100', port=8080)
-await client.connect()
-```
 
 ### Debug Mode
 
