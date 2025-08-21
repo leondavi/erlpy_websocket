@@ -215,7 +215,7 @@ handle_info({tcp, Socket, Data}, #state{client_socket = Socket} = State) ->
             logger:info("WEBSOCKET DECODED JSON: ~p", [JsonData]),
             try
                 Command = jsx:decode(JsonData, [return_maps]),
-                logger:info("📥 WEBSOCKET COMMAND PARSED: ~p", [Command]),
+                logger:info("WEBSOCKET COMMAND PARSED: ~p", [Command]),
                 
                 % Write to debug file
                 file:write_file("debug_websocket_commands.log", 
