@@ -3,11 +3,11 @@
 
 cd "$(dirname "$0")"
 
-echo "🚀 Starting BERL WebSocket Server..."
+echo "Starting BERL WebSocket Server..."
 
 # Ensure modules are compiled
 mkdir -p ebin
-echo "🔨 Compiling modules..."
+echo "Compiling modules..."
 erlc -pa ebin -o ebin src/*.erl
 
 # Check if rebar3 is available
@@ -20,8 +20,8 @@ else
     erl -pa ebin -eval "
         application:ensure_all_started(jsx),
         {ok, Pid} = berl_websocket_server:start_link(),
-        io:format('~n✅ WebSocket server started on port 19765 (PID: ~p)~n', [Pid]),
-        io:format('🔗 Connect from Python client or browser to ws://localhost:19765~n'),
+        io:format('~nWebSocket server started on port 19765 (PID: ~p)~n', [Pid]),
+        io:format('Connect from Python client or browser to ws://localhost:19765~n'),
         io:format('Press Ctrl+C twice to stop~n~n'),
         receive stop -> ok end.
     " -noshell

@@ -31,10 +31,10 @@ class BerlWebSocketClient:
         try:
             self.websocket = await websockets.connect(uri)
             self.running = True
-            logger.info("✅ Connected to WebSocket server")
+            logger.info("Connected to WebSocket server")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect: {e}")
+            logger.error(f"Failed to connect: {e}")
             return False
             
     async def disconnect(self):
@@ -57,16 +57,16 @@ class BerlWebSocketClient:
                 message_str = str(message)
                 
             await self.websocket.send(message_str)
-            logger.info(f"📤 Sent: {message}")
+            logger.info(f"Sent: {message}")
         except Exception as e:
-            logger.error(f"❌ Failed to send message: {e}")
+            logger.error(f"Failed to send message: {e}")
             
     async def listen_for_messages(self):
         """Listen for incoming messages from the server"""
         try:
             while self.running and self.websocket:
                 message = await self.websocket.recv()
-                logger.info(f"📥 Received: {message}")
+                logger.info(f"Received: {message}")
                 
                 try:
                     # Try to parse as JSON
@@ -79,7 +79,7 @@ class BerlWebSocketClient:
         except websockets.exceptions.ConnectionClosed:
             logger.info("Connection closed by server")
         except Exception as e:
-            logger.error(f"❌ Error listening for messages: {e}")
+            logger.error(f"Error listening for messages: {e}")
             
     async def handle_message(self, message):
         """Handle incoming messages from the server"""

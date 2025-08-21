@@ -224,50 +224,6 @@ client = BerlWebSocketClient(host='192.168.1.100', port=8080)
 await client.connect()
 ```
 
-## 🔒 Security Features
-
-- **RFC 6455 Compliance**: Full WebSocket standard implementation
-- **Frame Masking**: Proper client-to-server frame masking validation
-- **Input Validation**: JSON schema validation and error handling
-- **Connection Management**: Graceful connection handling and cleanup
-
-## 📊 Performance Characteristics
-
-- **Single Client per Port**: Each server instance handles one client
-- **Non-blocking I/O**: Asynchronous message handling
-- **JSON Processing**: Efficient binary JSON encoding/decoding
-- **Memory Efficient**: Minimal memory footprint per connection
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **Port already in use**
-   ```bash
-   # Check what's using the port
-   lsof -i :19765
-   
-   # Use a different port
-   ./run_erl_app.sh
-   ./run_py_app.sh --port 8080
-   ```
-
-2. **JSX dependency missing**
-   ```bash
-   rebar3 deps
-   rebar3 compile
-   ```
-
-3. **Python websockets not installed**
-   ```bash
-   pip3 install websockets
-   ```
-
-4. **Connection refused**
-   - Ensure Erlang server is running
-   - Check firewall settings
-   - Verify port number matches
-
 ### Debug Mode
 
 Enable detailed logging in Erlang:
@@ -275,11 +231,11 @@ Enable detailed logging in Erlang:
 logger:set_primary_config(level, debug).
 ```
 
-## 📝 License
+## License
 
 MIT License - see individual source files for details.
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -295,5 +251,3 @@ MIT License - see individual source files for details.
 - [rebar3 Documentation](https://rebar3.org/docs/)
 
 ---
-
-*Built with ❤️ using Erlang/OTP and Python*

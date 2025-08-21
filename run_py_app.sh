@@ -3,7 +3,7 @@
 
 cd "$(dirname "$0")"
 
-echo "🐍 Starting Python WebSocket Client..."
+echo "Starting Python WebSocket Client..."
 
 # Check if websockets is installed
 if ! python3 -c "import websockets" &> /dev/null; then
