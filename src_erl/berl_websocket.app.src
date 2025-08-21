@@ -1,0 +1,15 @@
+{application, berl_websocket,
+ [{description, "BERL WebSocket Server - RFC 6455 compliant WebSocket server for Erlang"},
+  {vsn, "1.0.0"},
+  {registered, []},
+  {applications,
+   [kernel,
+    stdlib,
+    crypto,
+    jsx
+   ]},
+  {env,[]},
+  {modules, [berl_websocket_server]},
+  {licenses, ["MIT"]},
+  {links, []}
+ ]}.

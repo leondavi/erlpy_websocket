@@ -1,0 +1,62 @@
+# Erlang build artifacts
+ebin/
+_build/
+*.beam
+*.plt
+*.so
+*.app
+erl_crash.dump
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+debug_websocket_commands.log
+
+# Test artifacts
+.eunit/
+logs/
+ct_run*/
+
+# Temporary files
+*.tmp
+*.temp
