@@ -1,7 +1,5 @@
 %%%===================================================================
-%%% @doc
-%%% BERL WebSocket Server
-%%% 
+
 %%% Implements RFC 6455 compliant WebSocket server for communication
 %%% between the Erlang backend and Python GUI frontend.
 %%% 
