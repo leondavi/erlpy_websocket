@@ -14,7 +14,7 @@ A comprehensive WebSocket communication system demonstrating bidirectional data 
 └─────────────────┘                 └─────────────────┘
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -40,7 +40,7 @@ In a new terminal:
 
 This will run the client in demo mode with test messages and interactive input.
 
-## 🎮 Usage Modes
+## Usage Modes
 
 ### Python Client Modes
 
@@ -153,7 +153,7 @@ Enable detailed logging in Erlang:
 logger:set_primary_config(level, debug).
 ```
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
@@ -176,7 +176,7 @@ BibTeX:
 }
 ```
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -186,7 +186,7 @@ BibTeX:
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
 
-## 📚 References
+## References
 
 - [RFC 6455 - The WebSocket Protocol](https://tools.ietf.org/html/rfc6455)
 - [Erlang gen_server Behavior](https://erlang.org/doc/man/gen_server.html)
