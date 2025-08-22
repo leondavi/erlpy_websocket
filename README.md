@@ -2,7 +2,7 @@
 
 A comprehensive WebSocket communication system demonstrating bidirectional data exchange between an Erlang server and Python client. The Erlang WebSocket server is RFC 6455 compliant and designed for easy integration into existing Erlang projects using rebar3.
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────┐    WebSocket    ┌─────────────────┐
