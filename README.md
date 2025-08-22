@@ -14,27 +14,6 @@ A comprehensive WebSocket communication system demonstrating bidirectional data 
 └─────────────────┘                 └─────────────────┘
 ```
 
-## 📁 Project Structure
-
-```
-erlpy_websocket/
-├── README.md                    # This file
-├── rebar.config                 # rebar3 configuration
-├── run_erl_app.sh              # Erlang server startup script
-├── run_py_app.sh               # Python client startup script
-├── src/                        # rebar3 standard source directory
-│   ├── berl_websocket.app.src  # Erlang application metadata
-│   ├── berl_websocket_server.erl # Main WebSocket server
-│   └── berl_app.erl            # Command handler (demo)
-├── src_erl/                    # Original Erlang source (backup)
-├── src_py/                     # Python source
-│   └── websocket_client.py     # Python WebSocket client
-└── test/                       # Test suites
-    ├── berl_websocket_server_tests.erl  # Erlang server tests
-    ├── berl_app_tests.erl              # Command handler tests
-    └── test_python_client.py           # Python client tests
-```
-
 ## 🚀 Quick Start
 
 ### Prerequisites
