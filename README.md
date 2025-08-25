@@ -2,7 +2,7 @@
 
 A comprehensive WebSocket communication system demonstrating bidirectional data exchange between an Erlang server and Python client. The Erlang WebSocket server is RFC 6455 compliant and designed for easy integration into existing Erlang projects using rebar3.
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────┐    WebSocket    ┌─────────────────┐
@@ -14,28 +14,7 @@ A comprehensive WebSocket communication system demonstrating bidirectional data 
 └─────────────────┘                 └─────────────────┘
 ```
 
-## 📁 Project Structure
-
-```
-erlpy_websocket/
-├── README.md                    # This file
-├── rebar.config                 # rebar3 configuration
-├── run_erl_app.sh              # Erlang server startup script
-├── run_py_app.sh               # Python client startup script
-├── src/                        # rebar3 standard source directory
-│   ├── berl_websocket.app.src  # Erlang application metadata
-│   ├── berl_websocket_server.erl # Main WebSocket server
-│   └── berl_app.erl            # Command handler (demo)
-├── src_erl/                    # Original Erlang source (backup)
-├── src_py/                     # Python source
-│   └── websocket_client.py     # Python WebSocket client
-└── test/                       # Test suites
-    ├── berl_websocket_server_tests.erl  # Erlang server tests
-    ├── berl_app_tests.erl              # Command handler tests
-    └── test_python_client.py           # Python client tests
-```
-
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -61,7 +40,7 @@ In a new terminal:
 
 This will run the client in demo mode with test messages and interactive input.
 
-## 🎮 Usage Modes
+## Usage Modes
 
 ### Python Client Modes
 
@@ -83,15 +62,15 @@ This will run the client in demo mode with test messages and interactive input.
 
 ```erlang
 % Start programmatically
-{ok, Pid} = berl_websocket_server:start_link().     % Default port 19765
-{ok, Pid} = berl_websocket_server:start_link(8080). % Custom port
+{ok, Pid} = websocket_server:start_link().     % Default port 19765
+{ok, Pid} = websocket_server:start_link(8080). % Custom port
 
 % Send messages to connected clients
 berl_websocket_server:send_message(19765, #{type => <<"notification">>, 
                                            message => <<"Hello!">>}).
 
 % Stop server
-berl_websocket_server:stop(19765).
+websocket_server:stop(19765).
 ```
 
 ## 📨 Message Protocol
@@ -166,63 +145,6 @@ python3 test/test_python_client.py
 2. In another terminal: `./run_py_app.sh --mode interactive`
 3. Type JSON messages like: `{"type": "ping", "timestamp": "2025-01-01T00:00:00Z"}`
 
-## 🔧 Integration with rebar3 Projects
-
-To integrate the WebSocket server into your existing Erlang project:
-
-### Method 1: Copy Source Files
-
-1. Copy `src/berl_websocket_server.erl` to your project's `src/` directory
-2. Copy `src/berl_app.erl` or replace with your own command handler
-3. Add to your `rebar.config`:
-   ```erlang
-   {deps, [
-       {jsx, "3.1.0"}  % For JSON handling
-   ]}.
-   ```
-4. Add modules to your `.app.src`:
-   ```erlang
-   {modules, [berl_websocket_server, your_app, ...]},
-   {applications, [kernel, stdlib, jsx, ...]},
-   ```
-
-### Method 2: Git Dependency
-
-Add to your `rebar.config`:
-```erlang
-{deps, [
-    {berl_websocket, {git, "https://github.com/yourusername/erlpy_websocket.git", {branch, "main"}}}
-]}.
-```
-
-### Method 3: Use as Library
-
-1. Clone this repository
-2. Run `rebar3 compile` to build
-3. Add to your Erlang code path: `erl -pa /path/to/erlpy_websocket/_build/default/lib/*/ebin`
-
-## ⚙️ Configuration
-
-### Erlang Server Configuration
-
-```erlang
-% Custom port
-{ok, Pid} = berl_websocket_server:start_link(8080).
-
-% Multiple servers
-{ok, Pid1} = berl_websocket_server:start_link(8080).
-{ok, Pid2} = berl_websocket_server:start_link(8081).
-```
-
-### Python Client Configuration
-
-```python
-from src_py.websocket_client import BerlWebSocketClient
-
-# Custom configuration
-client = BerlWebSocketClient(host='192.168.1.100', port=8080)
-await client.connect()
-```
 
 ### Debug Mode
 
@@ -231,7 +153,7 @@ Enable detailed logging in Erlang:
 logger:set_primary_config(level, debug).
 ```
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
@@ -254,7 +176,7 @@ BibTeX:
 }
 ```
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -264,7 +186,7 @@ BibTeX:
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
 
-## 📚 References
+## References
 
 - [RFC 6455 - The WebSocket Protocol](https://tools.ietf.org/html/rfc6455)
 - [Erlang gen_server Behavior](https://erlang.org/doc/man/gen_server.html)
