@@ -11,7 +11,7 @@ echo "Compiling modules..."
 erlc -pa ebin -o ebin src/*.erl
 
 # Check if rebar3 is available
-if command -v rebar3 &> /dev/null; then
+if command -v rebar3 &> /dev/null && [ -z "$AUTOMATED_TEST" ]; then
     echo "Using rebar3 to run..."
     rebar3 shell --eval "
         {ok, Pid} = berl_websocket_server:start_link(),
@@ -21,13 +21,26 @@ if command -v rebar3 &> /dev/null; then
     " --config none
 else
     echo "Using direct Erlang..."
-    # Start with compiled modules
-    erl -pa ebin -eval "
-        application:ensure_all_started(jsx),
-        {ok, Pid} = berl_websocket_server:start_link(),
-        io:format('~nWebSocket server started on port 19765 (PID: ~p)~n', [Pid]),
-        io:format('Connect from Python client or browser to ws://localhost:19765~n'),
-        io:format('Press Ctrl+C twice to stop~n~n'),
-        receive stop -> ok end.
-    " -noshell
+    # Start with compiled modules - use rebar3 build path if available
+    if [ -d "_build/default/lib" ]; then
+        echo "Using rebar3 compiled modules..."
+        erl -pa _build/default/lib/*/ebin -eval "
+            application:ensure_all_started(jsx),
+            {ok, Pid} = berl_websocket_server:start_link(),
+            io:format('~nWebSocket server started on port 19765 (PID: ~p)~n', [Pid]),
+            io:format('Connect from Python client or browser to ws://localhost:19765~n'),
+            io:format('Press Ctrl+C twice to stop~n~n'),
+            receive stop -> ok end.
+        " -noshell
+    else
+        echo "Using ebin compiled modules..."
+        erl -pa ebin -eval "
+            application:ensure_all_started(jsx),
+            {ok, Pid} = berl_websocket_server:start_link(),
+            io:format('~nWebSocket server started on port 19765 (PID: ~p)~n', [Pid]),
+            io:format('Connect from Python client or browser to ws://localhost:19765~n'),
+            io:format('Press Ctrl+C twice to stop~n~n'),
+            receive stop -> ok end.
+        " -noshell
+    fi
 fi

@@ -73,14 +73,35 @@ wait_for_server() {
     
     local count=0
     while [ $count -lt $TIMEOUT ]; do
+        # Check if port is listening
         if lsof -i :${TEST_PORT} >/dev/null 2>&1; then
             success "Server is listening on port ${TEST_PORT}"
             return 0
         fi
+        
+        # Also check server output for startup message
+        if [ -f "${PROJECT_ROOT}/server_output.log" ]; then
+            if grep -q "WebSocket server started on port ${TEST_PORT}" "${PROJECT_ROOT}/server_output.log"; then
+                log "Server startup message found in logs"
+                # Give it a moment more to bind to port
+                sleep 2
+                if lsof -i :${TEST_PORT} >/dev/null 2>&1; then
+                    success "Server is listening on port ${TEST_PORT}"
+                    return 0
+                fi
+            fi
+        fi
+        
         sleep 1
         count=$((count + 1))
         echo -n "."
     done
+    
+    # Show server output for debugging
+    if [ -f "${PROJECT_ROOT}/server_output.log" ]; then
+        log "Server output for debugging:"
+        cat "${PROJECT_ROOT}/server_output.log"
+    fi
     
     error "Server failed to start within ${TIMEOUT} seconds"
 }
@@ -131,6 +152,9 @@ start_server() {
     # Make sure the script is executable
     chmod +x run_erl_app.sh
     
+    # Set environment variable to use non-interactive mode
+    export AUTOMATED_TEST=1
+    
     # Start server in background and capture output
     ./run_erl_app.sh > server_output.log 2>&1 &
     SERVER_PID=$!
@@ -170,7 +194,7 @@ async def test_websocket_communication():
         uri = "ws://localhost:19765"
         logger.info(f"Connecting to {uri}")
         
-        async with websockets.connect(uri, timeout=10) as websocket:
+        async with websockets.connect(uri) as websocket:
             logger.info("Connected to WebSocket server")
             
             # Test cases
